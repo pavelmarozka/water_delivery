@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}Ошибка сервера{% endblock %} {% block
+content %}
+<div class="error-container">
+    <h1>500</h1>
+    <p>Произошла внутренняя ошибка сервера.</p>
+    <p>Попробуйте обновить страницу или вернуться позже.</p>
+    <a href="{{ url_for('delivery.list_records') }}" class="btn btn-primary"
+        >На главную</a
+    >
+</div>
+
+<style>
+    .error-container {
+        text-align: center;
+        margin: 100px auto;
+        max-width: 500px;
+    }
+
+    .error-container h1 {
+        font-size: 5rem;
+        color: #dc3545;
+    }
+</style>
+{% endblock %}

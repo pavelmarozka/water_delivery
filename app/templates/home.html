@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Главная страница{% endblock %} {%
+block content %}
+<div class="welcome-container">
+    <h1>Добро пожаловать в систему маршрутных листов</h1>
+
+    {% if current_user.is_authenticated %}
+    <p>Вы вошли как: <strong>{{ current_user.username }}</strong></p>
+    <a href="{{ url_for('delivery.list_records') }}" class="btn btn-primary">
+        Перейти к маршрутным листам
+    </a>
+    {% else %}
+    <p>Пожалуйста, авторизуйтесь для работы с системой</p>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Войти</a>
+    {% endif %}
+</div>
+
+<style>
+    .welcome-container {
+        text-align: center;
+        margin: 100px auto;
+        max-width: 600px;
+    }
+
+    .welcome-container h1 {
+        margin-bottom: 30px;
+    }
+
+    .welcome-container p {
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+    }
+</style>
+{% endblock %}

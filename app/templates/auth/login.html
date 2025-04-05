@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Авторизация{% endblock %} {% block
+content %}
+<div class="auth-container">
+    <h2>Авторизация</h2>
+    <form
+        method="POST"
+        action="{{ url_for('auth.login') }}"
+        class="auth-form bg-body-tertiary p-4 rounded-3"
+    >
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            <!-- Используем стандартные классы Bootstrap -->
+            {{ form.username.label(class="form-label") }} {{
+            form.username(class="form-control", placeholder="Введите логин") }}
+            {% for error in form.username.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }} {{
+            form.password(class="form-control", placeholder="Введите пароль") }}
+            {% for error in form.password.errors %}
+            <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.submit(class="btn btn-primary w-100") }}
+            <!-- w-100 = width: 100% -->
+        </div>
+    </form>
+</div>
+{% endblock %}

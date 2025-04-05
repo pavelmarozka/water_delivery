@@ -1,0 +1,101 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Добавление записи</h2>
+
+    <form
+        method="POST"
+        action="{{ url_for('delivery.add_record') }}"
+        class="bg-body-tertiary p-4 rounded-3"
+    >
+        {{ form.hidden_tag() }}
+
+        <!-- Поле времени -->
+        <div class="mb-3">
+            {{ form.time.label(class="form-label") }} {{
+            form.time(class="form-control", type="time") }}
+        </div>
+
+        <!-- Поле описания -->
+        <div class="mb-3">
+            {{ form.description.label(class="form-label") }} {{
+            form.description(class="form-control", rows="3") }}
+        </div>
+
+        <!-- Быстрые кнопки количества -->
+        <div class="mb-3">
+            <label class="form-label"
+                >Количество бутылей (1 бутыль = 180 руб)</label
+            >
+            <div class="d-flex flex-wrap gap-2 mb-2">
+                {% for i in range(1, 7) %}
+                <button
+                    type="button"
+                    class="btn btn-outline-primary quantity-btn"
+                    data-quantity="{{ i }}"
+                    data-price="{{ i * 180 }}"
+                >
+                    {{ i }}
+                </button>
+                {% endfor %}
+            </div>
+            {{ form.quantity(class="form-control", id="quantityInput", min="1")
+            }}
+        </div>
+
+        <!-- Поле суммы (автоматическое) -->
+        <div class="mb-3">
+            {{ form.amount.label(class="form-label") }} {{
+            form.amount(class="form-control", id="amountInput", readonly=true)
+            }}
+        </div>
+
+        <!-- Тип оплаты -->
+        <div class="mb-3">
+            {{ form.payment_type.label(class="form-label") }} {{
+            form.payment_type(class="form-select") }}
+        </div>
+
+        <!-- Кнопки отправки -->
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-success flex-grow-1">
+                <i class="bi bi-check-circle"></i> Добавить
+            </button>
+            <a
+                href="{{ url_for('delivery.list_records') }}"
+                class="btn btn-outline-secondary"
+            >
+                <i class="bi bi-x-circle"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const quantityInput = document.getElementById("quantityInput");
+        const amountInput = document.getElementById("amountInput");
+        const pricePerBottle = 180;
+
+        // Обработка быстрых кнопок
+        document.querySelectorAll(".quantity-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+                const quantity = this.dataset.quantity;
+                const total = this.dataset.price;
+
+                quantityInput.value = quantity;
+                amountInput.value = total;
+            });
+        });
+
+        // Ручной ввод количества
+        quantityInput.addEventListener("input", function () {
+            const quantity = this.value ? parseInt(this.value) : 0;
+            if (quantity > 0) {
+                amountInput.value = quantity * pricePerBottle;
+            } else {
+                amountInput.value = "";
+            }
+        });
+    });
+</script>
+{% endblock %}
