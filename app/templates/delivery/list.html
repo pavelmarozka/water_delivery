@@ -9,6 +9,12 @@
         >
             Добавить запись
         </a>
+        <a
+            href="{{ url_for('delivery.add_note', date=selected_date) }}"
+            class="btn btn-info"
+        >
+            Добавить заметку
+        </a>
 
         <form method="GET" class="date-form">
             <input
@@ -36,13 +42,41 @@
                 </tr>
             </thead>
             <tbody>
-                {% for record in records %}
+                {% for record in records %} {% if record.is_note %}
+                <tr class="note-row">
+                    <td>{{ record.time }}</td>
+                    <td colspan="3">{{ record.note }}</td>
+                    <td>
+                        <div class="btn-group btn-group-sm">
+                            <a
+                                href="{{ url_for('delivery.edit_record', id=record.id) }}"
+                                class="btn btn-outline-primary"
+                            >
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button
+                                class="btn btn-outline-danger"
+                                hx-post="{{ url_for('delivery.delete_record', id=record.id) }}"
+                                hx-confirm="Удалить эту заметку?"
+                                hx-target="closest tr"
+                                hx-swap="outerHTML swap:1s"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
                 <tr>
                     <td>{{ record.time }}</td>
                     <td>{{ record.description }}</td>
-                    <td class="text-end">{{ record.quantity }}</td>
                     <td class="text-end">
-                        {{ "%.2f ₽"|format(record.amount) }}
+                        {{ record.quantity if record.quantity is not none else
+                        '-' }}
+                    </td>
+                    <td class="text-end">
+                        {{ "%.2f ₽"|format(record.amount) if record.amount is
+                        not none else '-' }}
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm">
@@ -64,7 +98,7 @@
                         </div>
                     </td>
                 </tr>
-                {% endfor %}
+                {% endif %} {% endfor %}
             </tbody>
         </table>
     </div>
@@ -77,7 +111,6 @@
         <p>Всего бутылей: {{ totals.quantity }}</p>
     </div>
 
-    <!-- После блока с итогами -->
     <div class="mt-4">
         <a
             href="{{ url_for('delivery.generate_pdf', date=selected_date) }}"
@@ -86,7 +119,6 @@
             <i class="bi bi-file-earmark-pdf"></i> Скачать PDF
         </a>
     </div>
-
     {% endif %}
 </div>
 {% endblock %}

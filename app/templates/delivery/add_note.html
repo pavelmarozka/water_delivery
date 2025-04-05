@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Добавление заметки{% endblock %} {%
+block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Добавление заметки</h2>
+        </div>
+        <div class="card-body">
+            <form
+                method="POST"
+                action="{{ url_for('delivery.add_note', date=selected_date) }}"
+            >
+                {{ form.hidden_tag() }}
+
+                <!-- Время -->
+                <div class="mb-3">
+                    {{ form.time.label(class="form-label fw-bold") }} {{
+                    form.time(class="form-control", type="time") }} {% for error
+                    in form.time.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Заметка -->
+                <div class="mb-3">
+                    {{ form.note.label(class="form-label fw-bold") }} {{
+                    form.note(class="form-control", rows=3) }} {% for error in
+                    form.note.errors %}
+                    <span class="text-danger">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Кнопки -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-circle"></i> Добавить
+                    </button>
+                    <a
+                        href="{{ url_for('delivery.list_records', date=selected_date) }}"
+                        class="btn btn-secondary"
+                    >
+                        <i class="bi bi-x-circle"></i> Отмена
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

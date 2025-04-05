@@ -12,3 +12,8 @@ class DeliveryRecordForm(FlaskForm):
                              choices=[('', 'Не выбран'), ('нал', 'Наличные'), ('перевод', 'Перевод')],
                              validators=[DataRequired()])
     submit = SubmitField('Сохранить')
+
+class NoteForm(FlaskForm):
+    time = StringField('Время (HH:MM)', validators=[DataRequired()])
+    note = TextAreaField('Заметка', validators=[DataRequired()])
+    submit = SubmitField('Добавить заметку')
