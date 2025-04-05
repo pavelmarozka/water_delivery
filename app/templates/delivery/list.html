@@ -76,6 +76,17 @@
         <p>Общая сумма: {{ "%.2f"|format(totals.all) }} ₽</p>
         <p>Всего бутылей: {{ totals.quantity }}</p>
     </div>
+
+    <!-- После блока с итогами -->
+    <div class="mt-4">
+        <a
+            href="{{ url_for('delivery.generate_pdf', date=selected_date) }}"
+            class="btn btn-success"
+        >
+            <i class="bi bi-file-earmark-pdf"></i> Скачать PDF
+        </a>
+    </div>
+
     {% endif %}
 </div>
 {% endblock %}

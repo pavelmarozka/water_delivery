@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Маршрутный лист {{ selected_date }}</title>
+        <style>
+            body {
+                font-family: Arial;
+                margin: 0;
+                padding: 20px;
+            }
+            h1,
+            h2 {
+                text-align: center;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            th,
+            td {
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            th {
+                background-color: #f2f2f2;
+            }
+            .text-end {
+                text-align: right;
+            }
+            .totals {
+                margin-top: 20px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Крымская вода</h1>
+        <h2>Маршрутный лист за {{ selected_date }}</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Время</th>
+                    <th>Описание</th>
+                    <th class="text-end">Кол-во</th>
+                    <th class="text-end">Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.time }}</td>
+                    <td>{{ record.description }}</td>
+                    <td class="text-end">{{ record.quantity }}</td>
+                    <td class="text-end">
+                        {{ "%.2f ₽"|format(record.amount) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="totals">
+            <h3>Итого:</h3>
+            <p>Наличные: {{ "%.2f"|format(totals.cash) }} ₽</p>
+            <p>Перевод: {{ "%.2f"|format(totals.cashless) }} ₽</p>
+            <p>Общая сумма: {{ "%.2f"|format(totals.all) }} ₽</p>
+            <p>Всего бутылей: {{ totals.quantity }}</p>
+        </div>
+    </body>
+</html>
